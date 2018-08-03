@@ -1,0 +1,29 @@
+---
+driver:
+  name: vagrant
+  synced_folders:
+    - ["./", "/habitat/package"]
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: windows-2016
+    driver_config:
+      box: mwrock/Windows2016
+      customize:
+        memory: 2048
+        cpus: 4
+
+
+suites:
+  - name: default
+    run_list:
+      - recipe[windows-habitat-no-docker::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:
